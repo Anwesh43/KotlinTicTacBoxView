@@ -73,6 +73,7 @@ class TicTacBoxView(ctx : Context) : View(ctx) {
             val size = Math.min(w,h)/3
             paint.color = Color.WHITE
             paint.strokeWidth = size/20
+            paint.strokeCap = Paint.Cap.ROUND
             canvas.save()
             canvas.translate(w/2, h/2)
             for (i in 0..1) {
@@ -93,6 +94,24 @@ class TicTacBoxView(ctx : Context) : View(ctx) {
         }
         fun startUpdating(startcb : () -> Unit) {
             state.startUpdating(startcb)
+        }
+    }
+    data class Renderer(var view : TicTacBoxView) {
+        val ticTacBox : TicTacBox = TicTacBox(0)
+        val animator : Animator = Animator(view)
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            ticTacBox.draw(canvas, paint)
+            animator.animate {
+                ticTacBox.update {
+                    animator.stop()
+                }
+            }
+        }
+        fun handleTap() {
+            ticTacBox.startUpdating {
+                animator.start()
+            }
         }
     }
 }
