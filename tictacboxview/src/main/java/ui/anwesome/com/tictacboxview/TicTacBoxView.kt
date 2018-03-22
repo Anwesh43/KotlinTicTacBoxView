@@ -3,6 +3,7 @@ package ui.anwesome.com.tictacboxview
 /**
  * Created by anweshmishra on 22/03/18.
  */
+import android.app.Activity
 import android.view.*
 import android.content.*
 import android.graphics.*
@@ -113,6 +114,13 @@ class TicTacBoxView(ctx : Context) : View(ctx) {
             ticTacBox.startUpdating {
                 animator.start()
             }
+        }
+    }
+    companion object {
+        fun create(activity : Activity) : TicTacBoxView {
+            val view = TicTacBoxView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
