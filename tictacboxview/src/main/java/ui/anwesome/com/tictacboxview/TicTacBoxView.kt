@@ -22,7 +22,7 @@ class TicTacBoxView(ctx : Context) : View(ctx) {
         return true
     }
     data class State(var prevScale : Float = 0f, var j : Int = 0, var dir : Int = 0) {
-        val scales : Array<Float> = arrayOf(0f, 0f)
+        val scales : Array<Float> = arrayOf(0f, 0f, 0f)
         fun update(stopcb : (Float) -> Unit) {
             scales[j] += dir * 0.1f
             if (Math.abs(scales[j] - prevScale) > 1) {
@@ -89,6 +89,25 @@ class TicTacBoxView(ctx : Context) : View(ctx) {
                 }
                 canvas.restore()
             }
+            canvas.save()
+            canvas.translate(-size/3 , -size/3)
+            for (i in 0..2) {
+                for (j in 0..2) {
+                    canvas.save()
+                    canvas.translate((size/3) * i, (size/3) * j)
+                    canvas.scale(state.scales[2], state.scales[2])
+                    if ((i +j) % 2 == 0) {
+                        canvas.drawLine(-size/12, -size/12, size/12, size/12, paint)
+                        canvas.drawLine(size/12, -size/12, -size/12, size/12, paint)
+                    }
+                    else {
+                        paint.style = Paint.Style.STROKE
+                        canvas.drawCircle(0f, 0f, size/12, paint)
+                    }
+                    canvas.restore()
+                }
+            }
+            canvas.restore()
             canvas.restore()
         }
         fun update(stopcb : (Float) -> Unit) {
